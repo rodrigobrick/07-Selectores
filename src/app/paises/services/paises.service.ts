@@ -23,14 +23,14 @@ export class PaisesService {
     return this.http.get<Paises[]>(url)
   }
 
-  getPaisPorCca3( codigo: string ): Observable<PaisCompleto | null> {
+  getPaisPorCca3( codigo: string ): Observable<PaisCompleto[] | []> {
 
     if( !codigo ){
-      return of(null)
+      return of([])
     }
 
     const url: string = `${this.baseUrl}/alpha/${codigo}`;
-    return this.http.get<PaisCompleto>(url);
+    return this.http.get<PaisCompleto[]>(url);
   }
 
   getPaisFrontera( codigo: string ): Observable<Paises> {

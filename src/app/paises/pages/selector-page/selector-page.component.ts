@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { switchMap, tap } from 'rxjs';
 
-import { Paises } from '../../interfaces/paises.interfaces';
+import { PaisCompleto, Paises } from '../../interfaces/paises.interfaces';
 import { PaisesService } from '../../services/paises.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class SelectorPageComponent implements OnInit {
   //llenado de selectores
   regiones : string[] = [];
   paises   : Paises[] = [];
-  fronteras: Paises[] = [];
+  fronteras: string[] = [];
 
   cargando: boolean = false;
 
@@ -55,13 +55,11 @@ export class SelectorPageComponent implements OnInit {
             this.cargando = true;
           }), 
           switchMap( codigo => this.paisesService.getPaisPorCca3(codigo) ),
-          switchMap( pais => this.paisesService.getPaisPorCodigo(pais?.borders!))
         )
-        .subscribe(paises => {
-          
-           // this.fronteras = pais[0].borders
-          this.fronteras = paises;
-          
+        .subscribe(pais => {
+          if( pais.length > 0 ){
+            this.fronteras = pais[0].borders || []
+          }
           this.cargando = false; 
         })
   }
